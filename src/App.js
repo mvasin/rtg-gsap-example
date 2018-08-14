@@ -5,24 +5,25 @@ import { TimelineLite } from "gsap/TweenMax";
 import logo from './logo.svg';
 import './App.css';
 
+/* eslint-disable default-case */
 class App extends Component {
   static homeTransition(_, status, done) {
-    console.log('hi', status, done);
+    console.log('status:', status);
     const tl = new TimelineLite();
     tl.eventCallback('onComplete', done);
     switch (status) {
       case 'entering':
         tl.from('.App-header', 3, {opacity: 0})
-          .from('.App-body', 2, {x: -900}, '-=2');
+          .from('.App-body', 2, {x: '-100%'}, '-=2');
         break;
       case 'exiting':
-        tl.to('.App-header', 3, {opacity: 0})
-          .to('.App-body', 3, {x: -900}, '-=3');
+        tl.to('.App-header', 2, {opacity: 0}, '+=1')
+          .to('.App-body', 3, {x: '100%'}, '-=3');
     }
   }
 
   static anotherTransition(node, status, done) {
-    console.log('hi', status, done);
+    console.log('status:', status);
     const tl = new TimelineLite();
     tl.eventCallback('onComplete', done);
     switch (status) {
