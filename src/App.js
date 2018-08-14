@@ -7,7 +7,7 @@ import './App.css';
 
 class App extends Component {
   static homeTransition(_, status, done) {
-    console.log('hi', status, done);
+    console.log('status:', status, 'done callback:', done);
     const tl = new TimelineLite();
     tl.eventCallback('onComplete', done);
     switch (status) {
@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   static anotherTransition(node, status, done) {
-    console.log('hi', status, done);
+    console.log('status:', status, 'done callback:', done);
     const tl = new TimelineLite();
     tl.eventCallback('onComplete', done);
     switch (status) {
