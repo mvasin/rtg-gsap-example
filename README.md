@@ -2,7 +2,7 @@ This is a showcase for integration of `react-transition-group` and GSAP.
 
 Try it: `git clone https://github.com/mvasin/rtg-gsap-example && yarn && yarn start`.
 
-The biggest caveat I had to find out was that by the time GSAP declares timeline animations (like `tl.to(node, 1, {x: 10})`, the nodes MUST be in the DOM.
+The biggest caveat I had to find out is that by the time GSAP declares timeline animations (like `tl.to(node, 1, {x: 10})`, the nodes MUST be in the DOM.
 
 In React, where DOM nodes come and go, you really have to understand what's going on with your DOM nodes. If nodes are gone and then recreated, GSAP will silently wait for the duration of animation involving those lost nodes.
 
