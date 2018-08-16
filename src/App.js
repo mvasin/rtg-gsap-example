@@ -6,40 +6,59 @@ import logo from './logo.svg';
 import './App.css';
 
 /* eslint-disable default-case */
-class App extends Component {
-  static homeTransition(_, status, done) {
-    console.log('status:', status);
-    const tl = new TimelineLite();
-    tl.eventCallback('onComplete', done);
-    switch (status) {
-      case 'entering':
-        tl.from('.App-header', 3, { opacity: 0 }).from(
-          '.App-body',
-          2,
-          { x: '-100%' },
-          '-=2'
-        );
-        break;
-      case 'exiting':
-        tl.to('.App-header', 2, { opacity: 0 }, '+=1').to(
-          '.App-body',
-          3,
-          { x: '100%' },
-          '-=3'
-        );
-    }
+class Page1 extends Component {
+  componentDidMount() {
+    this.props.tl
+      .from(this.body, 2, { x: '-100%' })
+      .from(this.header, 2, { opacity: 0 }, '-=2');
   }
 
-  static anotherTransition(node, status, done) {
-    console.log('status:', status);
-    const tl = new TimelineLite();
-    tl.eventCallback('onComplete', done);
+  componentWillUnmount() {
+    this.props.tl.clear();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header ref={x => (this.header = x)} className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">
+            Homepage transition status: {this.props.status}
+          </h1>
+        </header>
+        <p className="App-body" ref={x => (this.body = x)}>
+          This is an animated home page.{' '}
+          <Link to="/another">Go another route</Link>
+        </p>
+      </div>
+    );
+  }
+}
+
+const Page2 = () => (
+  <p>
+    Hi from another route. <Link to="/">Go back</Link>
+  </p>
+);
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.tl = new TimelineLite({ paused: true });
+    window.tl = this.tl;
+    this.homeTransition = this.homeTransition.bind(this);
+  }
+
+  homeTransition(_, status, done) {
+    console.log('homeTransition');
+    this.tl.eventCallback('onComplete', done);
+    this.tl.eventCallback('onReverseComplete', done);
     switch (status) {
       case 'entering':
-        tl.from(node, 3, { opacity: 0 });
+        this.tl.play();
         break;
       case 'exiting':
-        tl.to(node, 3, { opacity: 0 });
+        this.tl.reverse();
     }
   }
 
@@ -52,36 +71,15 @@ class App extends Component {
               <Transition
                 appear
                 in={!!match}
+                mountOnEnter
                 unmountOnExit
-                addEndListener={App.homeTransition}
+                addEndListener={this.homeTransition}
               >
-                <div className="App">
-                  <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                  </header>
-                  <p className="App-body">
-                    To get started, edit <code>src/App.js</code> and save to
-                    reload. <Link to="/another">Go another route</Link>
-                  </p>
-                </div>
+                {status => <Page1 status={status} tl={this.tl} />}
               </Transition>
             )}
           </Route>
-          <Route path="/another">
-            {({ match }) => (
-              <Transition
-                appear
-                in={!!match}
-                unmountOnExit
-                addEndListener={App.anotherTransition}
-              >
-                <p>
-                  Hi from another route. <Link to="/">Go back</Link>
-                </p>
-              </Transition>
-            )}
-          </Route>
+          <Route path="/another" component={Page2} />
         </React.Fragment>
       </Router>
     );
