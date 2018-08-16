@@ -2,7 +2,7 @@
 
 ## What is this?
 This is a showcase for integration of `react-transition-group` and GSAP.
-Please pay attention that it uses RTG version with my PR #396, not yet published on npm. At the moment you can add it to youк project with `yarn add https://github.com/mvasin/react-transition-group/tarball/tmp-build`, later it will hopefully be on npm (look for version >= 3.0).
+Please pay attention that it uses RTG version with my PR #396, not yet published on npm. At the moment you can add it to youк project with `yarn add https://github.com/mvasin/react-transition-group/tarball/tmp-build`, later it will hopefully land on npm (look for version >= 3.0).
 
 ## Try it
 `git clone https://github.com/mvasin/rtg-gsap-example && yarn && yarn start`.
