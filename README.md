@@ -4,7 +4,7 @@ Try it: `git clone https://github.com/mvasin/rtg-gsap-example && yarn && yarn st
 
 Pay attention to how gracefully it works when in the middle of transition you force it to transition back (click the links while in transition!).
 
-The biggest caveat I had to find out is that by the time GSAP declares timeline animations (like `tl.to(node, 1, {x: 10})`, the nodes MUST be in the DOM.
+The biggest caveat I have encountered is that by the time GSAP declares timeline animations (like `tl.to(node, 1, {x: 10})`, the nodes MUST be in the DOM.
 
 In React, where DOM nodes come and go, you really have to understand what's going on with your DOM nodes. If nodes are gone and then recreated, GSAP will silently wait for the duration of animation involving those lost nodes.
 
