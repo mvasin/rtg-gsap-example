@@ -8,7 +8,7 @@ The biggest caveat I have encountered is that by the time GSAP declares timeline
 
 In React, where DOM nodes come and go, you really have to understand what's going on with your DOM nodes. If nodes are gone and then recreated, GSAP will silently wait for the duration of animation involving those lost nodes.
 
-It also relates to nodes specified by class or ids. Don't expect recreated nodes with the same ids/classes to be automatically hooked up by GSAP.
+This will also happen to nodes specified by class or ids. Don't expect recreated nodes with the same ids/classes to be automatically hooked up by GSAP.
 
 Avoiding the caveat above unfortunately complicated the code. But it works nicely. It could be a bit simplier if we choose to keep not to unmount passed routes, but I guess that's not gonna work for big apps (too heavy).
 
