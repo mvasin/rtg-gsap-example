@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 import PropTypes from 'prop-types';
+import { TimelineLite } from 'gsap/all';
 
 export default class TransitionRoute extends React.Component {
   static propTypes = {
@@ -11,14 +12,15 @@ export default class TransitionRoute extends React.Component {
     exact: PropTypes.bool
   };
 
-  static defaultProps = {
-    transition: (_node, _status, done) => done()
-  };
+  // if we didn't recieve timeline via props, we'ra gonna run on our own
+  // NB this code doesn't expect timeline prop to be modified after instatiation
+  timeline = this.props.timeline || new TimelineLite();
+  transition = this.props.transition || ((tl, node, _status, done) => done());
 
   render() {
     const { path, exact, transition, ...other } = this.props;
     const Component = this.props.component;
-    Component.displayName = this.props.component.displayName;
+
     return (
       <Route path={path} exact={exact}>
         {({ match }) => (
@@ -29,7 +31,7 @@ export default class TransitionRoute extends React.Component {
             in={!!match}
             addEndListener={(node, done) => {
               const status = !!match ? 'entering' : 'exiting';
-              transition(node, status, done);
+              this.transition(this.timeline, node, status, done);
             }}
           >
             <Component {...other} />

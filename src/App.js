@@ -5,10 +5,11 @@ import TransitionRoute from './TransitionRoute';
 import Menu from './Menu';
 import Page1 from './Page1';
 // import Page2 from './Page2';
-import { fadeInOut } from './transitions';
+import { fadeInOut, displayNone } from './transitions';
 import { specificTransition } from './Page2';
 import Homepage from './Homepage';
 import { TimelineLite } from 'gsap/all';
+import uuid from 'uuid';
 
 injectGlobal`
   html, body {
@@ -26,12 +27,14 @@ const Wrapper = styled.div`
 // you must bind first arg to transition function, giving it either
 // a common timelime or individual timeline
 class App extends React.Component {
-  // for for all route transitions that want to be not ahead of the other
-  commonTimeline = new TimelineLite();
-  fadeInOutOnCT = fadeInOut.bind(null, this.commonTimeline);
-  specificTransitionCT = specificTransition.bind(null, this.commonTimeline);
-  fadeInOutOnSeparateTimeline = fadeInOut.bind(null, new TimelineLite());
+  constructor() {
+    super();
+    this.commonTimeline = new TimelineLite({ autoRemoveChildren: false });
+    window.tl = this.commonTimeline;
+  }
 
+  // if timeline is not passed, private timeline will be created and played
+  // (without queuing into global)
   render() {
     return (
       <Router>
@@ -40,14 +43,24 @@ class App extends React.Component {
             key="menu"
             path="/"
             component={Menu}
-            transition={this.fadeInOutOnSeparateTimeline}
+            transition={fadeInOut} // on its own timeline
           />
-          <TransitionRoute key="/" path="/" exact component={Homepage} />
+
+          <TransitionRoute
+            key="/"
+            path="/"
+            exact
+            component={Homepage}
+            timeline={this.commonTimeline}
+            transition={displayNone}
+          />
+
           <TransitionRoute
             key="/page1"
             path="/page1"
             component={Page1}
-            transition={this.fadeInOutOnCT}
+            timeline={this.commonTimeline} // on common timeline
+            transition={fadeInOut}
           />
           {/* <TransitionRoute
             key="/page2"
