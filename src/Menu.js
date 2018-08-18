@@ -18,7 +18,9 @@ export default class extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         <Link to="/page1">Page 1</Link>
         <Link to="/page2">Page 2</Link>
       </Wrapper>

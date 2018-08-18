@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Lorem from 'lorem-ipsum';
 import styled from 'styled-components';
+import { TimelineLite } from 'gsap/all';
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,23 +24,36 @@ function Sidebar(props) {
   return (
     <ColorfulDiv color="orchid" flex={1}>
       <MenuWrapper>
-        {Lorem({ count: 7, sentenceLowerBound: 1, sentenceUpperBound: 3 })
-          .split('.')
-          .map(el => (
-            <p>{el}</p>
-          ))}
+        <p>Nice</p>
+        <p>Good</p>
+        <p>Fun</p>
       </MenuWrapper>
     </ColorfulDiv>
   );
 }
 
-export default class extends Component {
+export function specificTransition(node, status, done) {
+  const tl = new TimelineLite({ onComplete: done });
+  console.log('tl.from', tl.from);
+
+  /* eslint-disable default-case */
+  switch (status) {
+    case 'entering':
+      tl.from(node, 3, { opacity: 0 });
+      break;
+    case 'exiting':
+      tl.to(node, 3, { opacity: 0 });
+      break;
+  }
+}
+
+export default class Page2 extends Component {
   render() {
     return (
       <Wrapper>
         <Sidebar />
         <ColorfulDiv color="powderblue" flex={2}>
-          {Lorem({ count: 50 })}
+          <p>This is the page 2</p>
         </ColorfulDiv>
       </Wrapper>
     );

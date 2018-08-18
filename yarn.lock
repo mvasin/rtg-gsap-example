@@ -5944,9 +5944,9 @@ react-scripts@1.1.4:
   optionalDependencies:
     fsevents "^1.1.3"
 
-"react-transition-group@https://github.com/mvasin/react-transition-group/tarball/tmp-build":
+react-transition-group@^2.4.0:
   version "2.4.0"
-  resolved "https://github.com/mvasin/react-transition-group/tarball/tmp-build#6f78db10f648086f4a3b496cd1921b814ee93f41"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.4.0.tgz#1d9391fabfd82e016f26fabd1eec329dbd922b5a"
   dependencies:
     dom-helpers "^3.3.1"
     loose-envify "^1.3.1"
