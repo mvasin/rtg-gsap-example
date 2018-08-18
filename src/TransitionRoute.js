@@ -19,7 +19,9 @@ export default class TransitionRoute extends React.Component {
 
   render() {
     const { path, exact, transition, ...other } = this.props;
+    const { component, ...cleanOther } = other;
     const Component = this.props.component;
+    Component.displayName = 'InTransition';
 
     return (
       <Route path={path} exact={exact}>
@@ -34,7 +36,7 @@ export default class TransitionRoute extends React.Component {
               this.transition(this.timeline, node, status, done);
             }}
           >
-            <Component {...other} />
+            <Component {...cleanOther} />
           </Transition>
         )}
       </Route>
