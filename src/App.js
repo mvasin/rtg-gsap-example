@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import TransitionRoute from './TransitionRoute';
 import Menu from './Menu';
 import Page1 from './Page1';
-// import Page2 from './Page2';
+import Page2 from './Page2';
 import { fadeInOut, displayNone } from './transitions';
 import { specificTransition } from './Page2';
 import Homepage from './Homepage';
@@ -62,12 +62,13 @@ class App extends React.Component {
             timeline={this.commonTimeline} // on common timeline
             transition={fadeInOut}
           />
-          {/* <TransitionRoute
+          <TransitionRoute
             key="/page2"
             path="/page2"
             component={Page2}
-            transition={this.specificTransitionCT}
-          /> */}
+            timeline={this.commonTimeline} // on common timeline
+            transition={fadeInOut}
+          />
         </Wrapper>
       </Router>
     );
