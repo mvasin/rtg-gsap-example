@@ -5,11 +5,11 @@ import TransitionRoute from './TransitionRoute';
 import Menu from './Menu';
 import Page1 from './Page1';
 import Page2 from './Page2';
+import Page3 from './Page3';
 import { fadeInOut, displayNone } from './transitions';
-import { specificTransition } from './Page2';
+// import { specificTransition } from './Page2';
 import Homepage from './Homepage';
 import { TimelineLite } from 'gsap/all';
-import uuid from 'uuid';
 
 injectGlobal`
   html, body {
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 class App extends React.Component {
   constructor() {
     super();
-    this.commonTimeline = new TimelineLite({ autoRemoveChildren: false });
+    this.commonTimeline = new TimelineLite();
     window.tl = this.commonTimeline;
   }
 
@@ -68,6 +68,15 @@ class App extends React.Component {
             component={Page2}
             timeline={this.commonTimeline} // on common timeline
             transition={fadeInOut}
+          />
+
+          <TransitionRoute
+            key="/page3"
+            path="/page3"
+            exact
+            component={Page3}
+            timeline={this.commonTimeline}
+            transition={displayNone}
           />
         </Wrapper>
       </Router>

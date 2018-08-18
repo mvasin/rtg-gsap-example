@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  background: pink;
+  background: orange;
   flex: auto;
 `;
 
-export default () => <Wrapper>Homepage. No transitions</Wrapper>;
+export default () => <Wrapper>Page 3. Also without transitions.</Wrapper>;
