@@ -18,7 +18,7 @@ export default class TransitionRoute extends React.Component {
   transition = this.props.transition || ((tl, node, _status, done) => done());
 
   render() {
-    const { path, exact, transition, ...other } = this.props;
+    const { path, exact, transition, delayIn, ...other } = this.props;
     const { component, ...cleanOther } = other;
     const Component = this.props.component;
     Component.displayName = 'InTransition';
@@ -33,7 +33,7 @@ export default class TransitionRoute extends React.Component {
             in={!!match}
             addEndListener={(node, done) => {
               const status = !!match ? 'entering' : 'exiting';
-              this.transition(this.timeline, node, status, done);
+              this.transition(this.timeline, node, status, delayIn, done);
             }}
           >
             <Component {...cleanOther} />

@@ -6,7 +6,7 @@ import Menu from './Menu';
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Page3 from './Page3';
-import { fadeInOut, displayNone } from './transitions';
+import { fadeInOut, instant, downUp } from './transitions';
 // import { specificTransition } from './Page2';
 import Homepage from './Homepage';
 import { TimelineLite } from 'gsap/all';
@@ -43,7 +43,8 @@ class App extends React.Component {
             key="menu"
             path="/"
             component={Menu}
-            transition={fadeInOut} // on its own timeline
+            transition={downUp} // on its own timeline
+            delayIn={3}
           />
 
           <TransitionRoute
@@ -52,7 +53,7 @@ class App extends React.Component {
             exact
             component={Homepage}
             timeline={this.commonTimeline}
-            transition={displayNone}
+            transition={instant}
           />
 
           <TransitionRoute
@@ -76,7 +77,7 @@ class App extends React.Component {
             exact
             component={Page3}
             timeline={this.commonTimeline}
-            transition={displayNone}
+            transition={instant}
           />
         </Wrapper>
       </Router>
