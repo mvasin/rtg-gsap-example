@@ -22,7 +22,7 @@ const MenuWrapper = styled.div`
 
 function Sidebar(props) {
   return (
-    <ColorfulDiv color="orchid" flex={1} className="menu">
+    <ColorfulDiv color="SkyBlue" flex={1} className="menu">
       <MenuWrapper>
         <p>Nice</p>
         <p>Good</p>
@@ -32,37 +32,40 @@ function Sidebar(props) {
   );
 }
 
-export function specificTransition(node, status, done) {
-  const tl = new TimelineLite({
-    onComplete: done,
-    onReverseComplete: done,
-    paused: true,
-    autoRemoveChildren: false
-  })
-    .fromTo('.menu', 4.5, { x: '-100%' }, { x: '0%' })
-    .fromTo('.content', 7, { x: '100%' }, { x: '0%' });
-
-  window.tl = tl;
-
+export function specificTransition(tl, node, status, done) {
   /* eslint-disable default-case */
   switch (status) {
     case 'entering':
-      console.log(tl);
+      tl.eventCallback('onComplete', done);
       tl.play();
       break;
     case 'exiting':
-      console.log(tl);
+      if (tl.progress() === 0) tl.seek(50);
+      tl.eventCallback('onReverseComplete', done);
       tl.reverse();
       break;
   }
 }
 
 export default class Page2 extends Component {
+  tl = new TimelineLite({ paused: true, autoRemoveChildren: false });
+
+  componentDidMount() {
+    const menu = document.querySelector('.menu');
+    const content = document.querySelector('.content');
+
+    if (!menu || !content) throw Error('DOM elements not found');
+
+    this.tl
+      .fromTo(menu, 1, { x: '-100%' }, { x: '0%' })
+      .fromTo(content, 1, { x: '100%' }, { x: '0%' });
+  }
+
   render() {
     return (
       <Wrapper>
         <Sidebar />
-        <ColorfulDiv color="powderblue" flex={2} className="content">
+        <ColorfulDiv color="SteelBlue" flex={2} className="content">
           <p>This is the page 2</p>
         </ColorfulDiv>
       </Wrapper>

@@ -21,7 +21,7 @@ const MenuWrapper = styled.div`
 
 function Sidebar() {
   return (
-    <ColorfulDiv color="orchid" flex={1}>
+    <ColorfulDiv color="Aquamarine" flex={1}>
       <MenuWrapper>
         <p>Blue</p>
         <p>Green</p>
@@ -36,7 +36,7 @@ export default class Page1 extends Component {
     return (
       <Wrapper>
         <Sidebar />
-        <ColorfulDiv color="powderblue" flex={2}>
+        <ColorfulDiv color="MediumSeaGreen" flex={2}>
           <p>This is the page 1</p>
         </ColorfulDiv>
       </Wrapper>
