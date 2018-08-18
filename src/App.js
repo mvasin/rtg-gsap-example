@@ -15,6 +15,10 @@ injectGlobal`
   html, body {
     margin: 0;
   }
+
+  .hidden {
+    display: none;
+  }
 `;
 
 const Wrapper = styled.div`

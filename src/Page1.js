@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs({ className: 'hidden' })`
   display: flex;
   flex: auto;
 `;
@@ -11,6 +11,7 @@ const ColorfulDiv = styled.div`
   background-color: ${p => p.color};
   flex: ${p => p.flex};
   padding: 2rem;
+  padding-top: 4.5rem;
 `;
 
 const MenuWrapper = styled.div`
