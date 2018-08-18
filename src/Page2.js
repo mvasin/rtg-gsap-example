@@ -22,7 +22,7 @@ const MenuWrapper = styled.div`
 
 function Sidebar(props) {
   return (
-    <ColorfulDiv color="orchid" flex={1}>
+    <ColorfulDiv color="orchid" flex={1} className="menu">
       <MenuWrapper>
         <p>Nice</p>
         <p>Good</p>
@@ -33,16 +33,26 @@ function Sidebar(props) {
 }
 
 export function specificTransition(node, status, done) {
-  const tl = new TimelineLite({ onComplete: done });
-  console.log('tl.from', tl.from);
+  const tl = new TimelineLite({
+    onComplete: done,
+    onReverseComplete: done,
+    paused: true,
+    autoRemoveChildren: false
+  })
+    .fromTo('.menu', 4.5, { x: '-100%' }, { x: '0%' })
+    .fromTo('.content', 7, { x: '100%' }, { x: '0%' });
+
+  window.tl = tl;
 
   /* eslint-disable default-case */
   switch (status) {
     case 'entering':
-      tl.from(node, 3, { opacity: 0 });
+      console.log(tl);
+      tl.play();
       break;
     case 'exiting':
-      tl.to(node, 3, { opacity: 0 });
+      console.log(tl);
+      tl.reverse();
       break;
   }
 }
@@ -52,7 +62,7 @@ export default class Page2 extends Component {
     return (
       <Wrapper>
         <Sidebar />
-        <ColorfulDiv color="powderblue" flex={2}>
+        <ColorfulDiv color="powderblue" flex={2} className="content">
           <p>This is the page 2</p>
         </ColorfulDiv>
       </Wrapper>

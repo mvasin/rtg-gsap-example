@@ -2,19 +2,22 @@ import { TimelineLite } from 'gsap/all';
 
 export function fadeInOut(node, status, done) {
   const tl = new TimelineLite({
-    onComplete: () => {
-      console.log(node);
-      done();
-    }
-  });
+    onComplete: done,
+    onReverseComplete: done,
+    autoRemoveChildren: false
+  }).fromTo(node, 3, { opacity: 0 }, { opacity: 1 });
+  window.tl = tl;
 
   /* eslint-disable default-case */
   switch (status) {
     case 'entering':
-      tl.from(node, 3, { opacity: 0 });
+      tl.play();
       break;
     case 'exiting':
-      tl.to(node, 3, { opacity: 0 });
+      // console.log(tl.duration())
+      tl.seek(50, false);
+      console.log(tl.time());
+      tl.reverse();
       break;
   }
 }
