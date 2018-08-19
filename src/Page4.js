@@ -26,6 +26,7 @@ const Circle = styled.div`
 export default class Page4 extends Component {
   entering = () => {
     const tl = this.props.timeline || new TimelineLite();
+    tl.set(this.wrapper, { x: '0' });
     tl.fromTo(
       this.red,
       2,
@@ -46,7 +47,7 @@ export default class Page4 extends Component {
       { y: '0%', ease: Elastic.easeOut.config(1, 0.1) },
       '-=1.8'
     );
-    tl.call(this.props.setTransitionEnded);
+    tl.call(this.props.done);
   };
 
   exiting = () => {
@@ -63,21 +64,21 @@ export default class Page4 extends Component {
         )
       }
     );
-    tl.call(this.props.setTransitionEnded);
+    tl.call(this.props.done);
   };
 
   componentDidMount() {
-    if (this.props.transitionStage === 'entering') this.entering();
+    if (this.props.stage === 'entering') this.entering();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.transitionStage === this.props.transitionStage) return;
+    if (prevProps.stage === this.props.stage) return;
 
-    if (this.props.transitionStage === 'entering') {
+    if (this.props.stage === 'entering') {
       this.entering();
     }
 
-    if (this.props.transitionStage === 'exiting') {
+    if (this.props.stage === 'exiting') {
       this.exiting();
     }
   }

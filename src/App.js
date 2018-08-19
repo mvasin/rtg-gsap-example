@@ -2,11 +2,12 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import TransitionRoute from './TransitionRoute';
+import RouteTransition from './RouteTransition';
 import Menu from './Menu';
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Page3 from './Page3';
-import TR from './TR';
+import Page4 from './Page4';
 import { fadeInOut, instant, downUp } from './transitions';
 // import { specificTransition } from './Page2';
 import Homepage from './Homepage';
@@ -86,15 +87,13 @@ class App extends React.Component {
             transition={instant}
           />
 
-          {/* <TransitionRoute
+          <RouteTransition
             key="/page4"
             path="/page4"
-            exact
-            component={Page4}
             timeline={this.commonTimeline}
-          /> */}
-
-          <TR />
+          >
+            {(stage, done) => <Page4 stage={stage} done={done} />}
+          </RouteTransition>
         </Wrapper>
       </Router>
     );
