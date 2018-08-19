@@ -15,7 +15,8 @@ export default class TransitionRoute extends React.Component {
   // if we didn't recieve timeline via props, we'ra gonna run on our own
   // NB this code doesn't expect timeline prop to be modified after instatiation
   timeline = this.props.timeline || new TimelineLite();
-  transition = this.props.transition || ((tl, node, _status, done) => done());
+  transition =
+    this.props.transition || ((_tl, _node, _status, _delayIn, done) => done());
 
   render() {
     const { path, exact, transition, delayIn, ...other } = this.props;

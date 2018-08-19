@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TimelineLite } from 'gsap/all';
+import { TimelineLite, Elastic } from 'gsap/all';
+import { CustomEase } from './vendor/CustomEase';
 
-const Wrapper = styled.div.attrs({ className: 'hidden' })`
+const Wrapper = styled.div`
   display: flex;
   flex: auto;
   justify-content: center;
@@ -22,50 +23,72 @@ const Circle = styled.div`
   margin: 5vw;
 `;
 
-// export function specificTransition(tl, node, status, done) {
-//   /* eslint-disable default-case */
-//   switch (status) {
-//     case 'entering':
-//       tl.eventCallback('onComplete', done);
-//       tl.play();
-//       break;
-//     case 'exiting':
-//       if (tl.progress() === 0) tl.seek(50);
-//       tl.eventCallback('onReverseComplete', done);
-//       tl.reverse();
-//       break;
-//   }
-// }
-
 export default class Page4 extends Component {
-  // tl = new TimelineLite({ paused: true, autoRemoveChildren: false });
+  entering = () => {
+    const tl = this.props.timeline || new TimelineLite();
+    tl.fromTo(
+      this.red,
+      2,
+      { x: '-100%' },
+      { x: '0%', ease: Elastic.easeOut.config(2, 0.3) }
+    );
+    tl.fromTo(
+      this.orange,
+      2,
+      { x: '100%' },
+      { x: '0%', ease: Elastic.easeOut.config(2, 0.3) },
+      '-=1.8'
+    );
+    tl.fromTo(
+      this.pink,
+      3,
+      { y: '-100%' },
+      { y: '0%', ease: Elastic.easeOut.config(1, 0.1) },
+      '-=1.8'
+    );
+    tl.call(this.props.setTransitionEnded);
+  };
 
-  // componentDidMount() {
-  //   const menu = document.querySelector('.menu');
-  //   const content = document.querySelector('.content');
+  exiting = () => {
+    const tl = this.props.timeline || new TimelineLite();
+    tl.fromTo(
+      this.wrapper,
+      1,
+      { x: '0' },
+      {
+        x: '1000',
+        ease: CustomEase.create(
+          'custom',
+          'M0,0 C0.42,-0.504 0.182,0.834 0.448,1.024 0.579,1.116 0.752,1 1,1'
+        )
+      }
+    );
+    tl.call(this.props.setTransitionEnded);
+  };
 
-  //   if (!menu || !content) throw Error('DOM elements not found');
+  componentDidMount() {
+    if (this.props.transitionStage === 'entering') this.entering();
+  }
 
-  //   this.tl
-  //     .fromTo(menu, 1, { x: '-100%' }, { x: '0%' })
-  //     .fromTo(content, 1, { x: '100%' }, { x: '0%' });
-  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps.transitionStage === this.props.transitionStage) return;
+
+    if (this.props.transitionStage === 'entering') {
+      this.entering();
+    }
+
+    if (this.props.transitionStage === 'exiting') {
+      this.exiting();
+    }
+  }
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper innerRef={c => (this.wrapper = c)}>
         <Centerer>
-          <Circle color="red" className="red" innerRef={c => (this.red = c)} />
-          <Circle
-            color="pink"
-            className="pink"
-            innerRef={c => (this.pink = c)}
-          />
-          <Circle
-            color="orange"
-            className="orange"
-            innerRef={c => (this.orange = c)}
-          />
+          <Circle color="red" innerRef={c => (this.red = c)} />
+          <Circle color="pink" innerRef={c => (this.pink = c)} />
+          <Circle color="orange" innerRef={c => (this.orange = c)} />
         </Centerer>
       </Wrapper>
     );

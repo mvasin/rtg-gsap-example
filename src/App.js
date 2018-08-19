@@ -1,16 +1,17 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import TransitionRoute from './TransitionRoute';
 import Menu from './Menu';
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Page3 from './Page3';
-import Page4 from './Page4';
+import TR from './TR';
 import { fadeInOut, instant, downUp } from './transitions';
 // import { specificTransition } from './Page2';
 import Homepage from './Homepage';
 import { TimelineLite } from 'gsap/all';
+import { Transition } from 'react-transition-group';
 
 injectGlobal`
   html, body {
@@ -49,7 +50,7 @@ class App extends React.Component {
             path="/"
             component={Menu}
             transition={downUp} // on its own timeline
-            delayIn={3}
+            delayIn={1}
           />
 
           <TransitionRoute
@@ -85,14 +86,15 @@ class App extends React.Component {
             transition={instant}
           />
 
-          <TransitionRoute
+          {/* <TransitionRoute
             key="/page4"
             path="/page4"
             exact
             component={Page4}
             timeline={this.commonTimeline}
-            transition={fadeInOut}
-          />
+          /> */}
+
+          <TR />
         </Wrapper>
       </Router>
     );
