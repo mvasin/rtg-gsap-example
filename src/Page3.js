@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TimelineLite } from 'gsap/all';
 
-const Wrapper = styled.div.attrs({ className: 'hidden' })`
+const Wrapper = styled.div`
   background: orange;
   flex: auto;
   padding-top: 4.5rem;
@@ -10,13 +9,16 @@ const Wrapper = styled.div.attrs({ className: 'hidden' })`
 
 export default class Page3 extends React.Component {
   entering = () => {
-    const tl = this.props.timeline || new TimelineLite();
-    tl.call(this.props.done);
+    const { tl } = this.props;
+    tl.call(this.props.setDone);
+    tl.play();
   };
 
   exiting = () => {
-    const tl = this.props.timeline || new TimelineLite();
-    tl.call(this.props.done);
+    const { tl } = this.props;
+    tl.clear();
+    tl.call(this.props.setDone);
+    tl.play();
   };
 
   componentDidMount() {

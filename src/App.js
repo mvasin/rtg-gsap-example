@@ -69,29 +69,27 @@ class App extends React.Component {
             timeline={this.commonTimeline} // on common timeline
             transition={fadeInOut}
           />
-          <TransitionRoute
+          <RouteTransition
             key="/page2"
             path="/page2"
-            component={Page2}
             timeline={this.commonTimeline} // on common timeline
             transition={fadeInOut}
-          />
-
-          <TransitionRoute
-            key="/page3"
-            path="/page3"
-            exact
-            component={Page3}
-            timeline={this.commonTimeline}
-            transition={instant}
-          />
-
-          <RouteTransition
-            key="/page4"
-            path="/page4"
-            // timeline={this.commonTimeline}
           >
-            {(stage, setDone) => <Page4 stage={stage} setDone={setDone} />}
+            {(stage, setDone) => (
+              <Page2 stage={stage} setDone={setDone} tl={this.commonTimeline} />
+            )}
+          </RouteTransition>
+
+          <RouteTransition key="/page3" path="/page3" exact>
+            {(stage, setDone) => (
+              <Page3 stage={stage} setDone={setDone} tl={this.commonTimeline} />
+            )}
+          </RouteTransition>
+
+          <RouteTransition key="/page4" path="/page4">
+            {(stage, setDone) => (
+              <Page4 stage={stage} setDone={setDone} tl={this.commonTimeline} />
+            )}
           </RouteTransition>
         </Wrapper>
       </Router>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TimelineLite } from 'gsap/all';
 
-const Wrapper = styled.div.attrs({ className: 'hidden' })`
+const Wrapper = styled.div`
   display: flex;
   flex: auto;
 `;
@@ -33,38 +32,71 @@ function Sidebar(props) {
   );
 }
 
-// export function specificTransition(tl, node, status, done) {
-//   /* eslint-disable default-case */
-//   switch (status) {
-//     case 'entering':
-//       tl.eventCallback('onComplete', done);
-//       tl.play();
-//       break;
-//     case 'exiting':
-//       if (tl.progress() === 0) tl.seek(50);
-//       tl.eventCallback('onReverseComplete', done);
-//       tl.reverse();
-//       break;
-//   }
-// }
-
 export default class Page2 extends Component {
-  // tl = new TimelineLite({ paused: true, autoRemoveChildren: false });
+  entering = () => {
+    const { tl } = this.props;
+    // tl.clear();
+    tl.to('.hidden', 0, { className: '-=hidden' });
+    tl.set(this.wrapper, { x: '0' });
+    tl.fromTo(
+      '.menu',
+      1,
+      { x: '-200', opacity: 0 },
+      {
+        x: '0',
+        opacity: 1
+      }
+    );
+    tl.fromTo(
+      '.content',
+      1,
+      { x: '200', opacity: 0 },
+      {
+        x: '0',
+        opacity: 1
+      },
+      '-=0.5'
+    );
+    tl.call(this.props.setDone);
+  };
 
-  // componentDidMount() {
-  //   const menu = document.querySelector('.menu');
-  //   const content = document.querySelector('.content');
+  exiting = () => {
+    const { tl } = this.props;
+    // tl.clear();
 
-  //   if (!menu || !content) throw Error('DOM elements not found');
+    tl.fromTo(
+      this.wrapper,
+      5,
+      { x: '0', opacity: 1 },
+      {
+        x: '600',
+        opacity: 0
+      }
+    );
 
-  //   this.tl
-  //     .fromTo(menu, 1, { x: '-100%' }, { x: '0%' })
-  //     .fromTo(content, 1, { x: '100%' }, { x: '0%' });
-  // }
+    tl.call(this.props.setDone);
+  };
+
+  componentDidMount() {
+    if (this.props.stage === 'entering') this.entering();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.stage === this.props.stage) return;
+
+    switch (this.props.stage) {
+      case 'entering':
+        this.entering();
+        break;
+      case 'exiting':
+        this.exiting();
+        break;
+    }
+  }
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper innerRef={c => (this.wrapper = c)} className="hidden">
         <Sidebar />
         <ColorfulDiv color="SteelBlue" flex={2} className="content">
           <p>This is the page 2</p>

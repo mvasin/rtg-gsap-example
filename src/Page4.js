@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TimelineLite, Elastic } from 'gsap/all';
+import { Elastic } from 'gsap/all';
 import { CustomEase } from './vendor/CustomEase';
 
 const Wrapper = styled.div`
@@ -24,56 +24,57 @@ const Circle = styled.div`
 `;
 
 export default class Page4 extends Component {
-  // tl = this.props.timeline || new TimelineLite();
-  tl = new TimelineLite();
-
   entering = () => {
-    this.tl.clear();
-    this.tl.set(this.wrapper, { x: '0' });
-    this.tl.fromTo(
+    const { tl } = this.props;
+    // tl.clear();
+    tl.to('.hidden', 0, { className: '-=hidden' });
+    tl.set(this.wrapper, { x: '0' });
+    tl.fromTo(
       this.red,
       2,
       { x: '-100%' },
       { x: '0%', ease: Elastic.easeOut.config(2, 0.3) }
     );
-    this.tl.fromTo(
+    tl.fromTo(
       this.orange,
       2,
       { x: '100%' },
       { x: '0%', ease: Elastic.easeOut.config(2, 0.3) },
       '-=1.8'
     );
-    this.tl.fromTo(
+    tl.fromTo(
       this.pink,
       3,
       { y: '-100%' },
       { y: '0%', ease: Elastic.easeOut.config(1, 0.1) },
       '-=1.8'
     );
-    this.tl.call(this.props.setDone);
+    tl.call(this.props.setDone);
   };
 
   exiting = () => {
-    this.tl.clear();
-    this.tl.call(() => {
+    const { tl } = this.props;
+    // tl.clear();
+    tl.call(() => {
       if (this.wrapper === null) throw Error('lost node!');
     });
-    this.tl.fromTo(
+    tl.fromTo(
       this.wrapper,
-      3,
-      { x: '0' },
+      10,
+      { x: '0', opacity: 1 },
       {
-        x: '1000',
+        x: '600',
+        opacity: 0,
         ease: CustomEase.create(
           'custom',
           'M0,0 C0.42,-0.504 0.182,0.834 0.448,1.024 0.579,1.116 0.752,1 1,1'
         )
       }
     );
-    this.tl.call(() => {
+    tl.call(() => {
       if (this.wrapper === null) throw Error('lost node!');
     });
-    this.tl.call(this.props.setDone);
+    tl.call(this.props.setDone);
   };
 
   componentDidMount() {
@@ -85,21 +86,17 @@ export default class Page4 extends Component {
 
     switch (this.props.stage) {
       case 'entering':
-        console.log(`starting ${this.props.stage} transition!`);
         this.entering();
         break;
       case 'exiting':
-        console.log(`starting ${this.props.stage} transition!`);
         this.exiting();
         break;
-      default:
-        this.tl.clear();
     }
   }
 
   render() {
     return (
-      <Wrapper innerRef={c => (this.wrapper = c)} className="wrapper">
+      <Wrapper innerRef={c => (this.wrapper = c)} className="wrapper hidden">
         <Centerer>
           <Circle color="red" innerRef={c => (this.red = c)} />
           <Circle color="pink" innerRef={c => (this.pink = c)} />
