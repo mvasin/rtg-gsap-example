@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { TimelineLite } from 'gsap/all';
 
 const Wrapper = styled.div`
   background: orange;
@@ -8,14 +9,16 @@ const Wrapper = styled.div`
 `;
 
 export default class Page3 extends React.Component {
+  tl = this.props.tl || new TimelineLite();
+
   entering = () => {
-    const { tl } = this.props;
+    const { tl } = this;
     tl.call(this.props.setDone);
     tl.play();
   };
 
   exiting = () => {
-    const { tl } = this.props;
+    const { tl } = this;
     tl.clear();
     tl.call(this.props.setDone);
     tl.play();

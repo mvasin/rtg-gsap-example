@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div.attrs({ className: 'hidden' })`
+const Wrapper = styled.div`
   display: flex;
   flex: auto;
 `;
@@ -33,6 +33,14 @@ function Sidebar() {
 }
 
 export default class Page1 extends Component {
+  // minimum what's needed for a page without transitions to work
+  componentDidUpdate(prevProps) {
+    if (prevProps.stage === this.props.stage) return;
+    if (['entering', 'exiting'].includes(this.props.stage)) {
+      this.props.setDone();
+    }
+  }
+
   render() {
     return (
       <Wrapper>

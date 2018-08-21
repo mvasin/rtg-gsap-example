@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Elastic } from 'gsap/all';
+import { TimelineLite, Elastic } from 'gsap/all';
 import { CustomEase } from './vendor/CustomEase';
 
 const Wrapper = styled.div`
@@ -24,9 +24,11 @@ const Circle = styled.div`
 `;
 
 export default class Page4 extends Component {
+  tl = new TimelineLite();
+
   entering = () => {
-    const { tl } = this.props;
-    // tl.clear();
+    const { tl } = this;
+    tl.clear();
     tl.to('.hidden', 0, { className: '-=hidden' });
     tl.set(this.wrapper, { x: '0' });
     tl.fromTo(
@@ -53,8 +55,8 @@ export default class Page4 extends Component {
   };
 
   exiting = () => {
-    const { tl } = this.props;
-    // tl.clear();
+    const { tl } = this;
+    tl.clear();
     tl.call(() => {
       if (this.wrapper === null) throw Error('lost node!');
     });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { TimelineLite } from 'gsap/all';
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,9 +34,11 @@ function Sidebar(props) {
 }
 
 export default class Page2 extends Component {
+  tl = this.props.tl || new TimelineLite();
+
   entering = () => {
-    const { tl } = this.props;
-    // tl.clear();
+    const { tl } = this;
+    tl.clear();
     tl.to('.hidden', 0, { className: '-=hidden' });
     tl.set(this.wrapper, { x: '0' });
     tl.fromTo(
@@ -61,8 +64,8 @@ export default class Page2 extends Component {
   };
 
   exiting = () => {
-    const { tl } = this.props;
-    // tl.clear();
+    const { tl } = this;
+    tl.clear();
 
     tl.fromTo(
       this.wrapper,

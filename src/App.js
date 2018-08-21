@@ -31,65 +31,38 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
-// you must bind first arg to transition function, giving it either
-// a common timelime or individual timeline
 class App extends React.Component {
-  constructor() {
-    super();
-    this.commonTimeline = new TimelineLite();
-  }
+  // commonTimeline = new TimelineLite();
 
-  // if timeline is not passed, private timeline will be created and played
-  // (without queuing into global)
   render() {
     return (
       <Router>
         <Wrapper>
-          <TransitionRoute
-            key="menu"
-            path="/"
-            component={Menu}
-            transition={downUp} // on its own timeline
-            delayIn={1}
-          />
+          <RouteTransition key="menu" path="/">
+            {(stage, setDone) => <Menu stage={stage} setDone={setDone} />}
+          </RouteTransition>
 
-          <TransitionRoute
-            key="/"
-            path="/"
-            exact
-            component={Homepage}
-            timeline={this.commonTimeline}
-            transition={instant}
-          />
+          <RouteTransition key="/" path="/" exact>
+            {(stage, setDone) => <Homepage stage={stage} setDone={setDone} />}
+          </RouteTransition>
 
-          <TransitionRoute
-            key="/page1"
-            path="/page1"
-            component={Page1}
-            timeline={this.commonTimeline} // on common timeline
-            transition={fadeInOut}
-          />
-          <RouteTransition
-            key="/page2"
-            path="/page2"
-            timeline={this.commonTimeline} // on common timeline
-            transition={fadeInOut}
-          >
+          <RouteTransition key="/page1" path="/page1">
+            {(stage, setDone) => <Page1 stage={stage} setDone={setDone} />}
+          </RouteTransition>
+
+          <RouteTransition key="/page2" path="/page2">
             {(stage, setDone) => (
-              <Page2 stage={stage} setDone={setDone} tl={this.commonTimeline} />
+              // add tl={this.commonTimeline} to pass the common timeline
+              <Page2 stage={stage} setDone={setDone} />
             )}
           </RouteTransition>
 
           <RouteTransition key="/page3" path="/page3" exact>
-            {(stage, setDone) => (
-              <Page3 stage={stage} setDone={setDone} tl={this.commonTimeline} />
-            )}
+            {(stage, setDone) => <Page3 stage={stage} setDone={setDone} />}
           </RouteTransition>
 
           <RouteTransition key="/page4" path="/page4">
-            {(stage, setDone) => (
-              <Page4 stage={stage} setDone={setDone} tl={this.commonTimeline} />
-            )}
+            {(stage, setDone) => <Page4 stage={stage} setDone={setDone} />}
           </RouteTransition>
         </Wrapper>
       </Router>
