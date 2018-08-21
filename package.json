@@ -13,7 +13,7 @@
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
-    "react-transition-group": "^2.4.0",
+    "react-transition-group": "https://github.com/mvasin/react-transition-group#add-done-render-prop-build",
     "styled-components": "^3.4.2"
   },
   "lint-staged": {

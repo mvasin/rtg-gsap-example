@@ -37,7 +37,6 @@ class App extends React.Component {
   constructor() {
     super();
     this.commonTimeline = new TimelineLite();
-    window.tl = this.commonTimeline;
   }
 
   // if timeline is not passed, private timeline will be created and played
@@ -90,9 +89,9 @@ class App extends React.Component {
           <RouteTransition
             key="/page4"
             path="/page4"
-            timeline={this.commonTimeline}
+            // timeline={this.commonTimeline}
           >
-            {(stage, done) => <Page4 stage={stage} done={done} />}
+            {(stage, setDone) => <Page4 stage={stage} setDone={setDone} />}
           </RouteTransition>
         </Wrapper>
       </Router>

@@ -24,37 +24,43 @@ const Circle = styled.div`
 `;
 
 export default class Page4 extends Component {
+  // tl = this.props.timeline || new TimelineLite();
+  tl = new TimelineLite();
+
   entering = () => {
-    const tl = this.props.timeline || new TimelineLite();
-    tl.set(this.wrapper, { x: '0' });
-    tl.fromTo(
+    this.tl.clear();
+    this.tl.set(this.wrapper, { x: '0' });
+    this.tl.fromTo(
       this.red,
       2,
       { x: '-100%' },
       { x: '0%', ease: Elastic.easeOut.config(2, 0.3) }
     );
-    tl.fromTo(
+    this.tl.fromTo(
       this.orange,
       2,
       { x: '100%' },
       { x: '0%', ease: Elastic.easeOut.config(2, 0.3) },
       '-=1.8'
     );
-    tl.fromTo(
+    this.tl.fromTo(
       this.pink,
       3,
       { y: '-100%' },
       { y: '0%', ease: Elastic.easeOut.config(1, 0.1) },
       '-=1.8'
     );
-    tl.call(this.props.done);
+    this.tl.call(this.props.setDone);
   };
 
   exiting = () => {
-    const tl = this.props.timeline || new TimelineLite();
-    tl.fromTo(
+    this.tl.clear();
+    this.tl.call(() => {
+      if (this.wrapper === null) throw Error('lost node!');
+    });
+    this.tl.fromTo(
       this.wrapper,
-      1,
+      3,
       { x: '0' },
       {
         x: '1000',
@@ -64,7 +70,10 @@ export default class Page4 extends Component {
         )
       }
     );
-    tl.call(this.props.done);
+    this.tl.call(() => {
+      if (this.wrapper === null) throw Error('lost node!');
+    });
+    this.tl.call(this.props.setDone);
   };
 
   componentDidMount() {
@@ -74,18 +83,23 @@ export default class Page4 extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.stage === this.props.stage) return;
 
-    if (this.props.stage === 'entering') {
-      this.entering();
-    }
-
-    if (this.props.stage === 'exiting') {
-      this.exiting();
+    switch (this.props.stage) {
+      case 'entering':
+        console.log(`starting ${this.props.stage} transition!`);
+        this.entering();
+        break;
+      case 'exiting':
+        console.log(`starting ${this.props.stage} transition!`);
+        this.exiting();
+        break;
+      default:
+        this.tl.clear();
     }
   }
 
   render() {
     return (
-      <Wrapper innerRef={c => (this.wrapper = c)}>
+      <Wrapper innerRef={c => (this.wrapper = c)} className="wrapper">
         <Centerer>
           <Circle color="red" innerRef={c => (this.red = c)} />
           <Circle color="pink" innerRef={c => (this.pink = c)} />
