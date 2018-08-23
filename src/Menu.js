@@ -8,11 +8,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 1rem;
   background: khaki;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
 `;
 
 const Logo = styled.img.attrs({ src })`
@@ -22,7 +17,7 @@ const Logo = styled.img.attrs({ src })`
 export default class extends React.Component {
   render() {
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <Link to="/">
           <Logo />
         </Link>

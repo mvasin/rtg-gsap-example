@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TimelineLite } from 'gsap/all';
+import { Spring, Transition, animated, config } from 'react-spring';
 
 const Wrapper = styled.div`
   display: flex;
   flex: auto;
+  ${p => (p.active ? '' : 'display: none')};
 `;
 
 const ColorfulDiv = styled.div`
@@ -21,87 +22,38 @@ const MenuWrapper = styled.div`
   padding: 2rem;
 `;
 
-function Sidebar(props) {
+function Sidebar({ active }) {
   return (
-    <ColorfulDiv color="SkyBlue" flex={1} className="menu">
-      <MenuWrapper>
-        <p>Nice</p>
-        <p>Good</p>
-        <p>Fun</p>
-      </MenuWrapper>
-    </ColorfulDiv>
+    <Spring
+      config={config.slow}
+      from={{ y: '100%' }}
+      to={{ y: active ? '0%' : '100%' }}
+    >
+      {styles => (
+        <ColorfulDiv color="SkyBlue" flex={1}>
+          <MenuWrapper style={{ transform: `translateY(${styles.y})` }}>
+            <p>Nice</p>
+            <p>Good</p>
+            <p>Fun</p>
+          </MenuWrapper>
+        </ColorfulDiv>
+      )}
+    </Spring>
   );
 }
 
 export default class Page2 extends Component {
-  tl = this.props.tl || new TimelineLite();
-
-  entering = () => {
-    const { tl } = this;
-    tl.clear();
-    tl.to('.hidden', 0, { className: '-=hidden' });
-    tl.set(this.wrapper, { x: '0' });
-    tl.fromTo(
-      '.menu',
-      1,
-      { x: '-200', opacity: 0 },
-      {
-        x: '0',
-        opacity: 1
-      }
-    );
-    tl.fromTo(
-      '.content',
-      1,
-      { x: '200', opacity: 0 },
-      {
-        x: '0',
-        opacity: 1
-      },
-      '-=0.5'
-    );
-    tl.call(this.props.setDone);
-  };
-
-  exiting = () => {
-    const { tl } = this;
-    tl.clear();
-
-    tl.fromTo(
-      this.wrapper,
-      5,
-      { x: '0', opacity: 1 },
-      {
-        x: '600',
-        opacity: 0
-      }
-    );
-
-    tl.call(this.props.setDone);
-  };
-
-  componentDidMount() {
-    if (this.props.stage === 'entering') this.entering();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.stage === this.props.stage) return;
-
-    switch (this.props.stage) {
-      case 'entering':
-        this.entering();
-        break;
-      case 'exiting':
-        this.exiting();
-        break;
-    }
-  }
-
   render() {
+    const { active } = this.props;
     return (
-      <Wrapper innerRef={c => (this.wrapper = c)} className="hidden">
-        <Sidebar />
-        <ColorfulDiv color="SteelBlue" flex={2} className="content">
+      <Wrapper {...this.props}>
+        <Sidebar active={active} />
+        <ColorfulDiv
+          active={active}
+          color="SteelBlue"
+          flex={2}
+          className="content"
+        >
           <p>This is the page 2</p>
         </ColorfulDiv>
       </Wrapper>

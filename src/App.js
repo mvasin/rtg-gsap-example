@@ -1,18 +1,14 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import TransitionRoute from './TransitionRoute';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import Menu from './Menu';
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Page3 from './Page3';
 import Page4 from './Page4';
-import { fadeInOut, instant, downUp } from './transitions';
-// import { specificTransition } from './Page2';
 import Homepage from './Homepage';
-import { TimelineLite } from 'gsap/all';
-import { Transition } from 'react-transition-group';
+import { Spring, Transition, animated, config } from 'react-spring';
 
 injectGlobal`
   html, body {
@@ -31,39 +27,70 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+class MountTracker extends React.Component {
+  componentDidMount() {
+    this.props.onMount();
+  }
+
+  componentWillUnmount() {
+    this.props.onUnmount();
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
 class App extends React.Component {
-  // commonTimeline = new TimelineLite();
+  // path may not be unique!
+  static routes = [
+    { path: '/', exact: false, component: Menu },
+    { path: '/page1', exact: false, component: Page1 },
+    { path: '/page2', exact: false, component: Page2 }
+  ];
+
+  state = { currentPathComponents: null, nextPathComponents: null };
+
+  handleMount = index => {
+    if (this.state.currentPath === App.routes[index].path) return;
+    if (!this.state.currentPath) {
+      this.setState({ currentPath: App.routes[index].path });
+      return;
+    }
+    if (!this.state.nextPath) {
+      this.setState({ nextPath: App.routes[index].path });
+      return;
+    }
+
+    // if both currentPath and nextPath slots are busy, do nothing
+  };
+
+  handleUnount = index => {};
 
   render() {
     return (
       <Router>
         <Wrapper>
-          <RouteTransition key="menu" path="/">
-            {(stage, setDone) => <Menu stage={stage} setDone={setDone} />}
-          </RouteTransition>
-
-          <RouteTransition key="/" path="/" exact>
-            {(stage, setDone) => <Homepage stage={stage} setDone={setDone} />}
-          </RouteTransition>
-
-          <RouteTransition key="/page1" path="/page1">
-            {(stage, setDone) => <Page1 stage={stage} setDone={setDone} />}
-          </RouteTransition>
-
-          <RouteTransition key="/page2" path="/page2">
-            {(stage, setDone) => (
-              // add tl={this.commonTimeline} to pass the common timeline
-              <Page2 stage={stage} setDone={setDone} />
-            )}
-          </RouteTransition>
-
-          <RouteTransition key="/page3" path="/page3" exact>
-            {(stage, setDone) => <Page3 stage={stage} setDone={setDone} />}
-          </RouteTransition>
-
-          <RouteTransition key="/page4" path="/page4">
-            {(stage, setDone) => <Page4 stage={stage} setDone={setDone} />}
-          </RouteTransition>
+          {App.routes.map((r, index) => {
+            const Component = r.component;
+            return (
+              <Route path={r.path}>
+                {({ match }) => (
+                  <Transition {...r.transition}>
+                    {!!match &&
+                      (styles => (
+                        <MountTracker
+                          onMount={() => this.handleMount(index)}
+                          onUnount={() => this.handleUnount(index)}
+                        >
+                          <Component styles={styles} />
+                        </MountTracker>
+                      ))}
+                  </Transition>
+                )}
+              </Route>
+            );
+          })}
         </Wrapper>
       </Router>
     );

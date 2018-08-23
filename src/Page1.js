@@ -43,7 +43,7 @@ export default class Page1 extends Component {
 
   render() {
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <Sidebar />
         <ColorfulDiv color="MediumSeaGreen" flex={2}>
           <p>This is the page 1</p>
