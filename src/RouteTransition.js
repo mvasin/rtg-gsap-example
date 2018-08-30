@@ -23,7 +23,12 @@ class RouteTransition extends React.Component {
       PropTypes.shape({
         path: PropTypes.string.isRequired,
         component: PropTypes.node.isRequired,
-        exact: PropTypes.bool
+        exact: PropTypes.bool,
+        transition: PropTypes.shape({
+          from: PropTypes.object,
+          enter: PropTypes.object,
+          leave: PropTypes.object
+        })
       })
     )
   };
@@ -64,7 +69,7 @@ class RouteTransition extends React.Component {
   handleUnount = index => {};
 
   render() {
-    return routes.map((r, index) => {
+    return this.props.routes.map((r, index) => {
       const Component = r.component;
       return (
         <Route path={r.path}>
