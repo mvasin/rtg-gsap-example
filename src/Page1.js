@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Spring } from 'react-spring';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,9 +21,9 @@ const MenuWrapper = styled.div`
   padding: 2rem;
 `;
 
-function Sidebar() {
+function Sidebar(props) {
   return (
-    <ColorfulDiv color="Aquamarine" flex={1}>
+    <ColorfulDiv color="Aquamarine" flex={1} {...props}>
       <MenuWrapper>
         <p>Blue</p>
         <p>Green</p>
@@ -33,20 +34,12 @@ function Sidebar() {
 }
 
 export default class Page1 extends Component {
-  // minimum what's needed for a page without transitions to work
-  componentDidUpdate(prevProps) {
-    if (prevProps.stage === this.props.stage) return;
-    if (['entering', 'exiting'].includes(this.props.stage)) {
-      this.props.setDone();
-    }
-  }
-
   render() {
     return (
       <Wrapper {...this.props}>
-        <Sidebar />
+        <Sidebar displayed={this.props.displayed} />
         <ColorfulDiv color="MediumSeaGreen" flex={2}>
-          <p>This is the page 1</p>
+          <p>This is the page 1 {`${this.props.displayed}`}</p>
         </ColorfulDiv>
       </Wrapper>
     );
